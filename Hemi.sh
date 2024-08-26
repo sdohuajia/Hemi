@@ -7,7 +7,7 @@ SCRIPT_PATH="$HOME/Hemi.sh"
 generate_key() {
     URL="https://github.com/hemilabs/heminetwork/releases/download/v0.3.2/heminetwork_v0.3.2_linux_amd64.tar.gz"
     FILENAME="heminetwork_v0.3.2_linux_amd64.tar.gz"
-    DIRECTORY="heminetwork_v0.3.2_linux_amd64"
+    DIRECTORY="Hemi"
     KEYGEN="./keygen"
     OUTPUT_FILE="$HOME/popm-address.json"
 
@@ -21,8 +21,11 @@ generate_key() {
         exit 1
     fi
 
-    echo "正在解压 $FILENAME..."
-    tar -xzvf "$FILENAME"
+    echo "创建目录 $DIRECTORY..."
+    mkdir -p "$DIRECTORY"
+
+    echo "正在解压 $FILENAME 到 $DIRECTORY..."
+    tar -xzf "$FILENAME" -C "$DIRECTORY"
 
     if [ $? -eq 0 ]; then
         echo "解压完成。"
@@ -32,7 +35,7 @@ generate_key() {
     fi
 
     echo "删除压缩文件..."
-    rm "$FILENAME"
+    rm -rf "$FILENAME"
 
     echo "进入目录 $DIRECTORY..."
     cd "$DIRECTORY" || { echo "目录 $DIRECTORY 不存在。"; exit 1; }
@@ -50,7 +53,7 @@ generate_key() {
 
 # 运行节点函数
 run_node() {
-    DIRECTORY="heminetwork_v0.3.2_linux_amd64"
+    DIRECTORY="Hemi"
 
     echo "进入目录 $DIRECTORY..."
     cd "$HOME/$DIRECTORY" || { echo "目录 $DIRECTORY 不存在。"; exit 1; }
