@@ -1,108 +1,108 @@
 #!/bin/bash
 
-# �ű�����·��
-SCRIPT_PATH="$HOME/Dawn.sh"
+# 脚本保存路径
+SCRIPT_PATH="$HOME/Hemi.sh"
 
-# ������Կ����
+# 生成密钥函数
 function generate_key() {
-    # �����������Ӻ�Ŀ���ļ���
+    # 设置下载链接和目标文件名
     URL="https://github.com/hemilabs/heminetwork/releases/download/v0.3.2/heminetwork_v0.3.2_linux_amd64.tar.gz"
     FILENAME="heminetwork_v0.3.2_linux_amd64.tar.gz"
     DIRECTORY="heminetwork_v0.3.2_linux_amd64"
     KEYGEN="./keygen"
     OUTPUT_FILE="$HOME/popm-address.json"
 
-    # �����ļ�
-    echo "�������� $FILENAME..."
+    # 下载文件
+    echo "正在下载 $FILENAME..."
     wget -q $URL -O $FILENAME
 
-    # ��������Ƿ�ɹ�
+    # 检查下载是否成功
     if [ $? -eq 0 ]; then
-        echo "������ɡ�"
+        echo "下载完成。"
     else
-        echo "����ʧ�ܡ�"
+        echo "下载失败。"
         exit 1
     fi
 
-    # ��ѹ�ļ�
-    echo "���ڽ�ѹ $FILENAME..."
+    # 解压文件
+    echo "正在解压 $FILENAME..."
     tar -xzvf $FILENAME
 
-    # ����ѹ�Ƿ�ɹ�
+    # 检查解压是否成功
     if [ $? -eq 0 ]; then
-        echo "��ѹ��ɡ�"
+        echo "解压完成。"
     else
-        echo "��ѹʧ�ܡ�"
+        echo "解压失败。"
         exit 1
     fi
 
-    # ɾ��ѹ���ļ�
-    echo "ɾ��ѹ���ļ�..."
+    # 删除压缩文件
+    echo "删除压缩文件..."
     rm $FILENAME
 
-    # �����ѹ���Ŀ¼
-    echo "����Ŀ¼ $DIRECTORY..."
+    # 进入解压后的目录
+    echo "进入目录 $DIRECTORY..."
     cd $DIRECTORY
 
-    # ���ɹ�Կ
-    echo "�������ɹ�Կ..."
+    # 生成公钥
+    echo "正在生成公钥..."
     $KEYGEN -secp256k1 -json -net="testnet" > $OUTPUT_FILE
 
-    # ��ʾ���ɵĹ�Կ
-    echo "��Կ������ɡ�����ļ���$OUTPUT_FILE"
-    echo "���ڲ鿴��Կ�ļ�����..."
+    # 显示生成的公钥
+    echo "公钥生成完成。输出文件：$OUTPUT_FILE"
+    echo "正在查看密钥文件内容..."
     cat $OUTPUT_FILE
 
-    # �ȴ��û���������������˵�
-    echo "��������������˵���..."
+    # 等待用户按任意键返回主菜单
+    echo "按任意键返回主菜单栏..."
     read -n 1 -s
 }
 
-# ���нڵ㺯��
+# 运行节点函数
 function run_node() {
     DIRECTORY="heminetwork_v0.3.2_linux_amd64"
 
-    # �����ѹ���Ŀ¼
-    echo "����Ŀ¼ $DIRECTORY..."
-    cd $HOME/$DIRECTORY || { echo "Ŀ¼ $DIRECTORY �����ڡ�"; exit 1; }
+    # 进入解压后的目录
+    echo "进入目录 $DIRECTORY..."
+    cd $HOME/$DIRECTORY || { echo "目录 $DIRECTORY 不存在。"; exit 1; }
 
-    # ���û������������нڵ�
-    echo "���û��������������ڵ�..."
+    # 设置环境变量并运行节点
+    echo "设置环境变量并启动节点..."
 
-    # ��ʾ�û��滻ʵ��ֵ
-    echo "���滻 <private_key> Ϊ���ʵ��˽Կ��"
-    echo "POPM_STATIC_FEE ��Ĭ��ֵΪ 50 (��λ��sat/vB)�������Ҫ����ֵ�����ڽű����滻��"
+    # 提示用户替换实际值
+    echo "请替换 <private_key> 为你的实际私钥。"
+    echo "POPM_STATIC_FEE 的默认值为 50 (单位：sat/vB)，如果需要其他值，请在脚本中替换。"
 
-    # ���û����������������Ҫ�滻ʵ��ֵ��
+    # 设置环境变量（请根据需要替换实际值）
     export POPM_BTC_PRIVKEY="<private_key>"
-    export POPM_STATIC_FEE="50"  # Ĭ�Ϸ���Ϊ 50 sat/vB
+    export POPM_STATIC_FEE="50"  # 默认费用为 50 sat/vB
     export POPM_BFG_URL="wss://testnet.rpc.hemi.network/v1/ws/public"
 
-    # �����ڵ�
-    echo "�����ڵ�..."
+    # 启动节点
+    echo "启动节点..."
     ./popmd
 
-    # �������˵�
-    echo "��������������˵���..."
+    # 返回主菜单
+    echo "按任意键返回主菜单栏..."
     read -n 1 -s
 }
 
-# ���˵�����
+# 主菜单函数
 function main_menu() {
     while true; do
         clear
-        echo "�ű��ɴ����������������д������ @ferdie_jhovie����ѿ�Դ�����������շ�"
+        echo "脚本由大赌社区哈哈哈哈编写，推特 @ferdie_jhovie，免费开源，请勿相信收费"
         echo "================================================================"
-        echo "�ڵ����� Telegram Ⱥ��: https://t.me/niuwuriji"
-        echo "�ڵ����� Telegram Ƶ��: https://t.me/niuwuriji"
-        echo "�ڵ����� Discord ��Ⱥ: https://discord.gg/GbMV5EcNWF"
-        echo "�˳��ű����밴���� ctrl + C �˳�����"
-        echo "��ѡ��Ҫִ�еĲ���:"
-        echo "1. ������Կ"
-        echo "2. ���нڵ�"
-        echo "3. �˳�"
+        echo "节点社区 Telegram 群组: https://t.me/niuwuriji"
+        echo "节点社区 Telegram 频道: https://t.me/niuwuriji"
+        echo "节点社区 Discord 社群: https://discord.gg/GbMV5EcNWF"
+        echo "退出脚本，请按键盘 ctrl + C 退出即可"
+        echo "请选择要执行的操作:"
+        echo "1. 生成密钥"
+        echo "2. 运行节点"
+        echo "3. 退出"
 
-        read -p "������ѡ�� [1-3]: " option
+        read -p "请输入选项 [1-3]: " option
 
         case $option in
             1)
@@ -112,15 +112,15 @@ function main_menu() {
                 run_node
                 ;;
             3)
-                echo "�˳��ű���"
+                echo "退出脚本。"
                 exit 0
                 ;;
             *)
-                echo "��Чѡ�������ѡ��"
+                echo "无效选项，请重新选择。"
                 ;;
         esac
     done
 }
 
-# ִ�����˵�����
+# 执行主菜单函数
 main_menu
