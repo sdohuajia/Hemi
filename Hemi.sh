@@ -58,6 +58,13 @@ run_node() {
     echo "进入目录 $DIRECTORY..."
     cd "$HOME/$DIRECTORY" || { echo "目录 $DIRECTORY 不存在。"; exit 1; }
 
+    echo "打开 popm-address.json 文件进行编辑..."
+    nano "$HOME/popm-address.json"
+
+    # 提示用户修改完后继续
+    echo "请确保已经修改并保存了 popm-address.json 文件。按任意键继续启动节点..."
+    read -n 1 -s
+
     echo "设置环境变量并启动节点..."
 
     echo "请替换 <private_key> 为你的实际私钥。"
