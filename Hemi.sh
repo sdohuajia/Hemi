@@ -165,6 +165,10 @@ upgrade_version() {
     URL="https://github.com/hemilabs/heminetwork/releases/download/v0.4.3/heminetwork_v0.4.3_linux_amd64.tar.gz"
     FILENAME="heminetwork_v0.4.3_linux_amd64.tar.gz"
     DIRECTORY="Hemi"
+    BACKUP_FILE="$HOME/popm-address.json.bak"
+
+    echo "正在备份 address.json..."
+    cp ~/popm-address.json "$BACKUP_FILE"
 
     echo "正在下载新版本 $FILENAME..."
     wget -q "$URL" -O "$FILENAME"
@@ -194,6 +198,9 @@ upgrade_version() {
 
     echo "删除压缩文件..."
     rm -rf "$FILENAME"
+
+    echo "恢复 address.json..."
+    cp "$BACKUP_FILE" ~/popm-address.json
 
     echo "版本升级完成！"
     echo "按任意键返回主菜单栏..."
