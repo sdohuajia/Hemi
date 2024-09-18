@@ -5,8 +5,8 @@ SCRIPT_PATH="$HOME/Hemi.sh"
 
 # 生成密钥函数
 generate_key() {
-    URL="https://github.com/hemilabs/heminetwork/releases/download/v0.3.2/heminetwork_v0.3.2_linux_amd64.tar.gz"
-    FILENAME="heminetwork_v0.3.2_linux_amd64.tar.gz"
+    URL="https://github.com/hemilabs/heminetwork/releases/download/v0.4.3/heminetwork_v0.4.3_linux_amd64.tar.gz"
+    FILENAME="heminetwork_v0.4.3_linux_amd64.tar.gz"
     DIRECTORY="Hemi"
     KEYGEN="./keygen"
     OUTPUT_FILE="$HOME/popm-address.json"
@@ -61,7 +61,6 @@ run_node() {
     echo "打开 popm-address.json 文件进行编辑..."
     nano "$HOME/popm-address.json"
 
-    # 提示用户修改完后继续
     echo "请确保已经修改并保存了 popm-address.json 文件。按任意键继续启动节点..."
     read -n 1 -s
 
@@ -70,14 +69,53 @@ run_node() {
     echo "请替换 <private_key> 为你的实际私钥。"
     echo "POPM_STATIC_FEE 的默认值为 50 (单位：sat/vB)，如果需要其他值，请在脚本中替换。"
 
-    # 设置环境变量（请根据需要替换实际值）
     export POPM_BTC_PRIVKEY="<private_key>"
-    export POPM_STATIC_FEE="50"  # 默认费用为 50 sat/vB
+    export POPM_STATIC_FEE="50"
     export POPM_BFG_URL="wss://testnet.rpc.hemi.network/v1/ws/public"
 
     echo "启动节点..."
     ./popmd
 
+    echo "按任意键返回主菜单栏..."
+    read -n 1 -s
+}
+
+# 升级版本函数
+upgrade_version() {
+    URL="https://github.com/hemilabs/heminetwork/releases/download/v0.4.3/heminetwork_v0.4.3_linux_amd64.tar.gz"
+    FILENAME="heminetwork_v0.4.3_linux_amd64.tar.gz"
+    DIRECTORY="Hemi"
+
+    echo "正在下载新版本 $FILENAME..."
+    wget -q "$URL" -O "$FILENAME"
+
+    if [ $? -eq 0 ]; then
+        echo "下载完成。"
+    else
+        echo "下载失败。"
+        exit 1
+    fi
+
+    echo "删除旧版本目录..."
+    rm -rf "$DIRECTORY"
+
+    echo "创建新版本目录 $DIRECTORY..."
+    mkdir -p "$DIRECTORY"
+
+    echo "正在解压 $FILENAME 到 $DIRECTORY..."
+    tar -xzf "$FILENAME" -C "$DIRECTORY"
+
+    if [ $? -eq 0 ]; then
+        echo "解压完成。"
+    else
+        echo "解压失败。"
+        exit 1
+    fi
+
+    echo "删除压缩文件..."
+    rm -rf "$FILENAME"
+
+    echo "版本升级完成！"
     echo "按任意键返回主菜单栏..."
     read -n 1 -s
 }
@@ -95,9 +133,10 @@ main_menu() {
         echo "请选择要执行的操作:"
         echo "1. 生成密钥"
         echo "2. 运行节点"
-        echo "3. 退出"
+        echo "3. 升级版本"
+        echo "4. 退出"
 
-        read -p "请输入选项 [1-3]: " option
+        read -p "请输入选项 [1-4]: " option
 
         case $option in
             1)
@@ -107,6 +146,9 @@ main_menu() {
                 run_node
                 ;;
             3)
+                upgrade_version
+                ;;
+            4)
                 echo "退出脚本。"
                 exit 0
                 ;;
