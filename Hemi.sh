@@ -124,6 +124,14 @@ generate_key() {
     echo "进入目录 $DIRECTORY..."
     cd "$DIRECTORY" || { echo "目录 $DIRECTORY 不存在。"; exit 1; }
 
+    # 检查并设置keygen执行权限
+    if [ -f "keygen" ]; then
+        chmod +x "keygen"
+    else
+        echo "未找到 keygen 文件。"
+        exit 1
+    fi
+    
     echo "正在生成公钥..."
     $KEYGEN -secp256k1 -json -net="testnet" > "$OUTPUT_FILE"
 
