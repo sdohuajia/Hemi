@@ -141,15 +141,25 @@ generate_key() {
 
 # 运行节点函数
 run_node() {
-    DIRECTORY="/root/heminetwork_v0.4.3_linux_amd64"
+    DIRECTORY="$HOME/heminetwork_v0.4.3_linux_amd64"
 
     echo "进入目录 $DIRECTORY..."
     cd "$DIRECTORY" || { echo "目录 $DIRECTORY 不存在。"; exit 1; }
 
-    cat ~/popm-address.json
+    # 设置 popm-address.json 的权限为可读写
+    if [ -f "$HOME/popm-address.json" ]; then
+        echo "为 popm-address.json 文件设置权限..."
+        chmod 600 "$HOME/popm-address.json"  # 仅当前用户可读写
+    else
+        echo "$HOME/popm-address.json 文件不存在。"
+        exit 1
+    fi
+
+    # 显示文件内容
+    cat "$HOME/popm-address.json"
 
     # 导入 private_key
-    POPM_BTC_PRIVKEY=$(jq -r '.private_key' ~/popm-address.json)
+    POPM_BTC_PRIVKEY=$(jq -r '.private_key' "$HOME/popm-address.json")
     read -p "检查 https://mempool.space/zh/testnet 上的 sats/vB 值并输入 / Check the sats/vB value on https://mempool.space/zh/testnet and input: " POPM_STATIC_FEE
 
     export POPM_BTC_PRIVKEY=$POPM_BTC_PRIVKEY
