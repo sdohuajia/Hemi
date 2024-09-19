@@ -91,8 +91,7 @@ generate_key() {
 
     URL="https://github.com/hemilabs/heminetwork/releases/download/v0.4.3/heminetwork_v0.4.3_linux_amd64.tar.gz"
     FILENAME="heminetwork_v0.4.3_linux_amd64.tar.gz"
-    DIRECTORY="Hemi"
-    KEYGEN="./keygen"
+    DIRECTORY="/root/heminetwork_v0.4.3_linux_amd64"
     OUTPUT_FILE="$HOME/popm-address.json"
 
     echo "正在下载 $FILENAME..."
@@ -105,11 +104,8 @@ generate_key() {
         exit 1
     fi
 
-    echo "创建目录 $DIRECTORY..."
-    mkdir -p "$DIRECTORY"
-
-    echo "正在解压 $FILENAME 到 $DIRECTORY..."
-    tar -xzf "$FILENAME" -C "$DIRECTORY"
+    echo "正在解压 $FILENAME..."
+    tar -xzf "$FILENAME" -C /root
 
     if [ $? -eq 0 ]; then
         echo "解压完成。"
@@ -124,7 +120,7 @@ generate_key() {
     echo "进入目录 $DIRECTORY..."
     cd "$DIRECTORY" || { echo "目录 $DIRECTORY 不存在。"; exit 1; }
 
-    # 检查并设置keygen执行权限
+    # 检查并设置 keygen 执行权限
     if [ -f "keygen" ]; then
         chmod +x "keygen"
     else
@@ -133,7 +129,7 @@ generate_key() {
     fi
     
     echo "正在生成公钥..."
-    $KEYGEN -secp256k1 -json -net="testnet" > "$OUTPUT_FILE"
+    ./keygen -secp256k1 -json -net="testnet" > "$OUTPUT_FILE"
 
     echo "公钥生成完成。输出文件：$OUTPUT_FILE"
     echo "正在查看密钥文件内容..."
@@ -145,10 +141,10 @@ generate_key() {
 
 # 运行节点函数
 run_node() {
-    DIRECTORY="Hemi"
+    DIRECTORY="/root/heminetwork_v0.4.3_linux_amd64"
 
     echo "进入目录 $DIRECTORY..."
-    cd "$HOME/$DIRECTORY" || { echo "目录 $DIRECTORY 不存在。"; exit 1; }
+    cd "$DIRECTORY" || { echo "目录 $DIRECTORY 不存在。"; exit 1; }
 
     cat ~/popm-address.json
 
@@ -172,7 +168,7 @@ run_node() {
 upgrade_version() {
     URL="https://github.com/hemilabs/heminetwork/releases/download/v0.4.3/heminetwork_v0.4.3_linux_amd64.tar.gz"
     FILENAME="heminetwork_v0.4.3_linux_amd64.tar.gz"
-    DIRECTORY="Hemi"
+    DIRECTORY="/root/heminetwork_v0.4.3_linux_amd64"
     ADDRESS_FILE="$HOME/popm-address.json"
     BACKUP_FILE="$HOME/popm-address.json.bak"
 
@@ -197,11 +193,8 @@ upgrade_version() {
     echo "删除旧版本目录..."
     rm -rf "$DIRECTORY"
 
-    echo "创建新版本目录 $DIRECTORY..."
-    mkdir -p "$DIRECTORY"
-
-    echo "正在解压 $FILENAME 到 $DIRECTORY..."
-    tar -xzf "$FILENAME" -C "$DIRECTORY"
+    echo "正在解压新版本..."
+    tar -xzf "$FILENAME" -C /root
 
     if [ $? -eq 0 ]; then
         echo "解压完成。"
