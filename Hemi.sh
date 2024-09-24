@@ -3,15 +3,17 @@
 # 脚本保存路径
 SCRIPT_PATH="$HOME/Hemi.sh"
 
-# 自动安装缺少的依赖项 (git 和 make)
+# 自动安装缺少的依赖项 (git, make 和 jq)
 install_dependencies() {
-    for cmd in git make; do
+    echo "更新软件包列表... / Updating package list..."
+    sudo apt update
+
+    for cmd in git make jq; do
         if ! command -v $cmd &> /dev/null; then
             echo "$cmd 未安装。正在自动安装 $cmd... / $cmd is not installed. Installing $cmd..."
 
             # 检测操作系统类型并执行相应的安装命令
             if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-                sudo apt update
                 sudo apt install -y $cmd
             elif [[ "$OSTYPE" == "darwin"* ]]; then
                 brew install $cmd
