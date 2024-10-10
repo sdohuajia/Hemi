@@ -284,6 +284,10 @@ create_autopop_script() {
     echo "    exit 1" >> autopop.sh
     echo "fi" >> autopop.sh
     echo "" >> autopop.sh
+    echo "# 设置其他环境变量" >> autopop.sh
+    echo "export POPM_BFG_URL=\"http://localhost:8383/v1/ws/public\"" >> autopop.sh
+    echo "export POPM_BTC_CHAIN_NAME=\"testnet3\"" >> autopop.sh
+    echo "" >> autopop.sh
     echo "# 使用 POPM_BTC_PRIVKEY 进行挖矿" >> autopop.sh
     echo "echo \"开始挖矿，使用的私钥是: \$POPM_BTC_PRIVKEY\"" >> autopop.sh
     echo "" >> autopop.sh
