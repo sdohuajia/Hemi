@@ -178,9 +178,9 @@ run_node() {
 
 # 升级版本函数
 upgrade_version() {
-    URL="https://github.com/hemilabs/heminetwork/releases/download/v0.4.3/heminetwork_v0.4.3_linux_amd64.tar.gz"
-    FILENAME="heminetwork_v0.4.3_linux_amd64.tar.gz"
-    DIRECTORY="/root/heminetwork_v0.4.3_linux_amd64"
+    URL="https://github.com/hemilabs/heminetwork/releases/download/v0.4.4/heminetwork_v0.4.4_linux_amd64.tar.gz"
+    FILENAME="heminetwork_v0.4.4_linux_amd64.tar.gz"
+    DIRECTORY="/root/heminetwork_v0.4.4_linux_amd64"
     ADDRESS_FILE="$HOME/popm-address.json"
     BACKUP_FILE="$HOME/popm-address.json.bak"
 
@@ -273,7 +273,7 @@ main_menu() {
         echo "请选择要执行的操作:"
         echo "1) 生成密钥"
         echo "2) 运行节点"
-        echo "3) 升级版本"
+        echo "3) 升级版本(0.4.4)"
         echo "4) 备份 address.json"
         echo "5) 查看日志"
         echo "6) 退出"
