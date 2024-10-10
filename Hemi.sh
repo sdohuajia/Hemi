@@ -310,6 +310,9 @@ create_autopop_script() {
     chmod +x autopop.sh  # 赋予执行权限
     echo "autopop.sh 已创建并赋予执行权限。"
     ./autopop.sh  # 运行 autopop.sh
+
+    echo "按任意键返回主菜单栏..."
+    read -n 1 -s
 }
 
 # 主菜单函数
