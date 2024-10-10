@@ -266,8 +266,17 @@ view_logs() {
 create_autopop_script() {
     echo "#!/bin/bash" > autopop.sh
     echo "" >> autopop.sh
+    echo "# 检查并设置 popm-address.json 文件权限" >> autopop.sh
+    echo "ADDRESS_FILE=\"\$HOME/popm-address.json\"" >> autopop.sh
+    echo "if [ ! -f \"\$ADDRESS_FILE\" ]; then" >> autopop.sh
+    echo "    echo \"错误: 文件 \$ADDRESS_FILE 不存在。\"" >> autopop.sh
+    echo "    exit 1" >> autopop.sh
+    echo "fi" >> autopop.sh
+    echo "chmod 600 \"\$ADDRESS_FILE\"  # 设置文件权限为 600" >> autopop.sh
+    echo "" >> autopop.sh
     echo "# 从 popm-address.json 中获取私钥" >> autopop.sh
-    echo "POPM_BTC_PRIVKEY=\$(jq -r '.private_key' \"\$HOME/popm-address.json\")" >> autopop.sh
+    echo "POPM_BTC_PRIVKEY=\$(jq -r '.private_key' \"\$ADDRESS_FILE\")" >> autopop.sh
+    echo "echo \"获取的私钥: \$POPM_BTC_PRIVKEY\"" >> autopop.sh  # 添加调试信息
     echo "" >> autopop.sh
     echo "# 检查环境变量是否设置" >> autopop.sh
     echo "if [ -z \"\$POPM_BTC_PRIVKEY\" ]; then" >> autopop.sh
@@ -275,11 +284,14 @@ create_autopop_script() {
     echo "    exit 1" >> autopop.sh
     echo "fi" >> autopop.sh
     echo "" >> autopop.sh
+    echo "# 使用 POPM_BTC_PRIVKEY 进行挖矿" >> autopop.sh
+    echo "echo \"开始挖矿，使用的私钥是: \$POPM_BTC_PRIVKEY\"" >> autopop.sh
+    echo "" >> autopop.sh
     echo "# 无限循环以保持脚本运行" >> autopop.sh
     echo "while true" >> autopop.sh
     echo "do" >> autopop.sh
-    echo "    # 运行挖矿命令" >> autopop.sh
-    echo "    ./popmd" >> autopop.sh
+    echo "    # 运行挖矿命令，确保使用 POPM_BTC_PRIVKEY" >> autopop.sh
+    echo "    ./popmd --privkey \"\$POPM_BTC_PRIVKEY\"" >> autopop.sh
     echo "" >> autopop.sh
     echo "    # 检查上一个命令的退出状态" >> autopop.sh
     echo "    if [ \$? -ne 0 ]; then" >> autopop.sh
