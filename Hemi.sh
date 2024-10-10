@@ -266,24 +266,33 @@ view_logs() {
 create_autopop_script() {
     echo "#!/bin/bash" > autopop.sh
     echo "" >> autopop.sh
-    echo "# Infinite loop to keep the script running" >> autopop.sh
+    echo "# 从 popm-address.json 中获取私钥" >> autopop.sh
+    echo "POPM_BTC_PRIVKEY=\$(jq -r '.private_key' \"\$HOME/popm-address.json\")" >> autopop.sh
+    echo "" >> autopop.sh
+    echo "# 检查环境变量是否设置" >> autopop.sh
+    echo "if [ -z \"\$POPM_BTC_PRIVKEY\" ]; then" >> autopop.sh
+    echo "    echo \"错误: POPM_BTC_PRIVKEY 必须设置。\"" >> autopop.sh
+    echo "    exit 1" >> autopop.sh
+    echo "fi" >> autopop.sh
+    echo "" >> autopop.sh
+    echo "# 无限循环以保持脚本运行" >> autopop.sh
     echo "while true" >> autopop.sh
     echo "do" >> autopop.sh
-    echo "    # Run the mining command" >> autopop.sh
+    echo "    # 运行挖矿命令" >> autopop.sh
     echo "    ./popmd" >> autopop.sh
     echo "" >> autopop.sh
-    echo "    # Check the exit status of the previous command" >> autopop.sh
+    echo "    # 检查上一个命令的退出状态" >> autopop.sh
     echo "    if [ \$? -ne 0 ]; then" >> autopop.sh
-    echo "        echo \"Mining process crashed. Restarting in 5 seconds...\"" >> autopop.sh
-    echo "        sleep 5  # Wait for 5 seconds before restarting" >> autopop.sh
+    echo "        echo \"挖矿进程崩溃。5秒后重启...\"" >> autopop.sh
+    echo "        sleep 5  # 等待5秒后重启" >> autopop.sh
     echo "    else" >> autopop.sh
-    echo "        echo \"Mining process stopped normally.\"" >> autopop.sh
-    echo "        break  # Exit the loop if the process stopped normally" >> autopop.sh
+    echo "        echo \"挖矿进程正常停止。\"" >> autopop.sh
+    echo "        break  # 如果进程正常停止，则退出循环" >> autopop.sh
     echo "    fi" >> autopop.sh
     echo "done" >> autopop.sh
 
     chmod +x autopop.sh  # 赋予执行权限
-    echo "autopop.sh 已创建并赋予执行权限。/ autopop.sh has been created and made executable."
+    echo "autopop.sh 已创建并赋予执行权限。"
     ./autopop.sh  # 运行 autopop.sh
 }
 
