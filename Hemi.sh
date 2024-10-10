@@ -262,48 +262,6 @@ view_logs() {
     read -n 1 -s
 }
 
-# 创建 autopop.sh 脚本
-create_autopop_script() {
-    echo "#!/bin/bash" > autopop.sh
-    echo "" >> autopop.sh
-    echo "# 检查并设置 popm-address.json 文件权限" >> autopop.sh
-    echo "ADDRESS_FILE=\"\$HOME/popm-address.json\"" >> autopop.sh
-    echo "if [ ! -f \"\$ADDRESS_FILE\" ]; then" >> autopop.sh
-    echo "    echo \"错误: 文件 \$ADDRESS_FILE 不存在。\"" >> autopop.sh
-    echo "    exit 1" >> autopop.sh
-    echo "fi" >> autopop.sh
-    echo "chmod 600 \"\$ADDRESS_FILE\"  # 设置文件权限为 600" >> autopop.sh
-    echo "" >> autopop.sh
-    echo "# 从 popm-address.json 中获取私钥" >> autopop.sh
-    echo "POPM_BTC_PRIVKEY=\$(jq -r '.private_key' \"\$ADDRESS_FILE\")" >> autopop.sh
-    echo "echo \"获取的私钥: \$POPM_BTC_PRIVKEY\"" >> autopop.sh  # 添加调试信息
-    echo "" >> autopop.sh
-    echo "# 检查环境变量是否设置" >> autopop.sh
-    echo "if [ -z \"\$POPM_BTC_PRIVKEY\" ]; then" >> autopop.sh
-    echo "    echo \"错误: POPM_BTC_PRIVKEY 必须设置。\"" >> autopop.sh
-    echo "    exit 1" >> autopop.sh
-    echo "fi" >> autopop.sh
-    echo "" >> autopop.sh
-    echo "# 设置其他环境变量" >> autopop.sh
-    echo "export POPM_STATIC_FEE=350" >> autopop.sh
-    echo "export POPM_BFG_URL=\"wss://testnet.rpc.hemi.network/v1/ws/public\"" >> autopop.sh
-    echo "export POPM_BTC_CHAIN_NAME=\"testnet3\"" >> autopop.sh
-    echo "" >> autopop.sh
-    echo "# 使用 POPM_BTC_PRIVKEY 进行挖矿" >> autopop.sh
-    echo "echo \"开始挖矿，使用的私钥是: \$POPM_BTC_PRIVKEY\"" >> autopop.sh
-    echo "" >> autopop.sh
-    echo "# 使用 pm2 启动挖矿命令" >> autopop.sh
-    echo "pm2 start ./popmd --name popmd -- --privkey \"\$POPM_BTC_PRIVKEY\"" >> autopop.sh
-    echo "echo \"挖矿进程已启动。\"" >> autopop.sh
-
-    chmod +x autopop.sh  # 赋予执行权限
-    echo "autopop.sh 已创建并赋予执行权限。"
-    ./autopop.sh  # 运行 autopop.sh
-
-    echo "按任意键返回主菜单栏..."
-    read -n 1 -s
-}
-
 # 主菜单函数
 main_menu() {
     while true; do
@@ -318,8 +276,7 @@ main_menu() {
         echo "3) 升级版本(0.4.4)"
         echo "4) 备份 address.json"
         echo "5) 查看日志"
-        echo "6) 植入崩溃或停止后自动重启程序"  # 新增选项
-        echo "7) 退出"
+        echo "6) 退出"
         read -p "选择一个操作: " choice
 
         case $choice in
@@ -339,9 +296,6 @@ main_menu() {
                 view_logs
                 ;;
             6)
-                create_autopop_script  # 调用创建 autopop.sh 的函数
-                ;;
-            7)
                 exit 0
                 ;;
             *)
