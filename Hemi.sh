@@ -262,6 +262,31 @@ view_logs() {
     read -n 1 -s
 }
 
+# 创建 autopop.sh 脚本
+create_autopop_script() {
+    echo "#!/bin/bash" > autopop.sh
+    echo "" >> autopop.sh
+    echo "# Infinite loop to keep the script running" >> autopop.sh
+    echo "while true" >> autopop.sh
+    echo "do" >> autopop.sh
+    echo "    # Run the mining command" >> autopop.sh
+    echo "    ./popmd" >> autopop.sh
+    echo "" >> autopop.sh
+    echo "    # Check the exit status of the previous command" >> autopop.sh
+    echo "    if [ \$? -ne 0 ]; then" >> autopop.sh
+    echo "        echo \"Mining process crashed. Restarting in 5 seconds...\"" >> autopop.sh
+    echo "        sleep 5  # Wait for 5 seconds before restarting" >> autopop.sh
+    echo "    else" >> autopop.sh
+    echo "        echo \"Mining process stopped normally.\"" >> autopop.sh
+    echo "        break  # Exit the loop if the process stopped normally" >> autopop.sh
+    echo "    fi" >> autopop.sh
+    echo "done" >> autopop.sh
+
+    chmod +x autopop.sh  # 赋予执行权限
+    echo "autopop.sh 已创建并赋予执行权限。/ autopop.sh has been created and made executable."
+    ./autopop.sh  # 运行 autopop.sh
+}
+
 # 主菜单函数
 main_menu() {
     while true; do
@@ -276,7 +301,8 @@ main_menu() {
         echo "3) 升级版本(0.4.4)"
         echo "4) 备份 address.json"
         echo "5) 查看日志"
-        echo "6) 退出"
+        echo "6) 植入崩溃或停止后自动重启程序"  # 新增选项
+        echo "7) 退出"
         read -p "选择一个操作: " choice
 
         case $choice in
@@ -296,6 +322,9 @@ main_menu() {
                 view_logs
                 ;;
             6)
+                create_autopop_script  # 调用创建 autopop.sh 的函数
+                ;;
+            7)
                 exit 0
                 ;;
             *)
