@@ -285,27 +285,16 @@ create_autopop_script() {
     echo "fi" >> autopop.sh
     echo "" >> autopop.sh
     echo "# 设置其他环境变量" >> autopop.sh
-    echo "export POPM_BFG_URL=\"http://localhost:8383/v1/ws/public\"" >> autopop.sh
+    echo "export POPM_STATIC_FEE=350" >> autopop.sh
+    echo "export POPM_BFG_URL=\"wss://testnet.rpc.hemi.network/v1/ws/public\"" >> autopop.sh
     echo "export POPM_BTC_CHAIN_NAME=\"testnet3\"" >> autopop.sh
     echo "" >> autopop.sh
     echo "# 使用 POPM_BTC_PRIVKEY 进行挖矿" >> autopop.sh
     echo "echo \"开始挖矿，使用的私钥是: \$POPM_BTC_PRIVKEY\"" >> autopop.sh
     echo "" >> autopop.sh
-    echo "# 无限循环以保持脚本运行" >> autopop.sh
-    echo "while true" >> autopop.sh
-    echo "do" >> autopop.sh
-    echo "    # 运行挖矿命令，确保使用 POPM_BTC_PRIVKEY" >> autopop.sh
-    echo "    ./popmd --privkey \"\$POPM_BTC_PRIVKEY\"" >> autopop.sh
-    echo "" >> autopop.sh
-    echo "    # 检查上一个命令的退出状态" >> autopop.sh
-    echo "    if [ \$? -ne 0 ]; then" >> autopop.sh
-    echo "        echo \"挖矿进程崩溃。5秒后重启...\"" >> autopop.sh
-    echo "        sleep 5  # 等待5秒后重启" >> autopop.sh
-    echo "    else" >> autopop.sh
-    echo "        echo \"挖矿进程正常停止。\"" >> autopop.sh
-    echo "        break  # 如果进程正常停止，则退出循环" >> autopop.sh
-    echo "    fi" >> autopop.sh
-    echo "done" >> autopop.sh
+    echo "# 使用 pm2 启动挖矿命令" >> autopop.sh
+    echo "pm2 start ./popmd --name popmd -- --privkey \"\$POPM_BTC_PRIVKEY\"" >> autopop.sh
+    echo "echo \"挖矿进程已启动。\"" >> autopop.sh
 
     chmod +x autopop.sh  # 赋予执行权限
     echo "autopop.sh 已创建并赋予执行权限。"
