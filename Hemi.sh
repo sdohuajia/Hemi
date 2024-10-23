@@ -192,6 +192,11 @@ upgrade_version() {
         echo "未找到 address.json 文件，无法备份。"
     fi
 
+    # 停止并删除 pm2 进程
+    echo "停止并删除 pm2 进程 popmd..."
+    pm2 stop popmd
+    pm2 delete popmd
+
     echo "正在下载新版本 $FILENAME..."
     wget -q "$URL" -O "$FILENAME"
 
@@ -234,6 +239,9 @@ upgrade_version() {
     export POPM_BTC_PRIVKEY=$POPM_BTC_PRIVKEY
     export POPM_STATIC_FEE=$POPM_STATIC_FEE
     export POPM_BFG_URL="wss://testnet.rpc.hemi.network/v1/ws/public"
+
+    echo "启动节点..."
+    pm2 start ./popmd --name popmd
 
     echo "版本升级完成！"
     echo "按任意键返回主菜单栏..."
