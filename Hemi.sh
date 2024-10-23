@@ -231,6 +231,9 @@ upgrade_version() {
         echo "备份文件不存在，无法恢复。"
     fi
 
+    echo "进入目录 $FILENAME..."
+    cd "$FILENAME" || { echo "目录 $FILENAME 不存在。"; exit 1; }
+
     # 导入 private_key
     POPM_BTC_PRIVKEY=$(jq -r '.private_key' "$HOME/popm-address.json")
     read -p "检查 https://mempool.space/zh/testnet 上的 sats/vB 值并输入 / Check the sats/vB value on https://mempool.space/zh/testnet and input: " POPM_STATIC_FEE
