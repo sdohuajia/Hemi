@@ -180,7 +180,7 @@ run_node() {
 upgrade_version() {
     URL="https://github.com/hemilabs/heminetwork/releases/download/v0.5.0/heminetwork_v0.5.0_linux_amd64.tar.gz"
     FILENAME="heminetwork_v0.5.0_linux_amd64.tar.gz"
-    DIRECTORY="/root/heminetwork_v0.4.5_linux_amd64"
+    DIRECTORY="/root/heminetwork_v0.5.0_linux_amd64"
     ADDRESS_FILE="$HOME/popm-address.json"
     BACKUP_FILE="$HOME/popm-address.json.bak"
 
@@ -208,7 +208,7 @@ upgrade_version() {
     fi
 
     echo "删除旧版本目录..."
-    rm -rf "$DIRECTORY"
+    rm -rf /root/heminetwork_v0.4.5_linux_amd64
 
     echo "正在解压新版本..."
     tar -xzf "$FILENAME" -C /root
@@ -231,8 +231,8 @@ upgrade_version() {
         echo "备份文件不存在，无法恢复。"
     fi
 
-    echo "进入目录 $FILENAME..."
-    cd "$FILENAME" || { echo "目录 $FILENAME 不存在。"; exit 1; }
+    echo "进入目录 $DIRECTORY..."
+    cd "$DIRECTORY" || { echo "目录 $DIRECTORY 不存在。"; exit 1; }
 
     # 导入 private_key
     POPM_BTC_PRIVKEY=$(jq -r '.private_key' "$HOME/popm-address.json")
