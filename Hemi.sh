@@ -293,7 +293,7 @@ main_menu() {
         echo "请选择要执行的操作:"
         echo "1) 生成密钥"
         echo "2) 运行节点"
-        echo "3) 升级版本(0.5.0)"
+        echo "3) 升级版本(0.6.0)"
         echo "4) 备份 address.json"
         echo "5) 查看日志"
         echo "6) 退出"
