@@ -91,9 +91,9 @@ generate_key() {
     check_go_version
     install_pm2
 
-    URL="https://github.com/hemilabs/heminetwork/releases/download/v0.6.0/heminetwork_v0.6.0_linux_amd64.tar.gz"
-    FILENAME="heminetwork_v0.6.0_linux_amd64.tar.gz"
-    DIRECTORY="/root/heminetwork_v0.6.0_linux_amd64"
+    URL="https://github.com/hemilabs/heminetwork/releases/download/v0.8.0/heminetwork_v0.8.0_linux_amd64.tar.gz"
+    FILENAME="heminetwork_v0.8.0_linux_amd64.tar.gz"
+    DIRECTORY="/root/heminetwork_v0.8.0_linux_amd64"
     OUTPUT_FILE="$HOME/popm-address.json"
 
     echo "正在下载 $FILENAME..."
@@ -143,7 +143,7 @@ generate_key() {
 
 # 运行节点函数
 run_node() {
-    DIRECTORY="$HOME/heminetwork_v0.6.0_linux_amd64"
+    DIRECTORY="$HOME/heminetwork_v0.8.0_linux_amd64"
 
     echo "进入目录 $DIRECTORY..."
     cd "$DIRECTORY" || { echo "目录 $DIRECTORY 不存在。"; exit 1; }
@@ -178,9 +178,9 @@ run_node() {
 
 # 升级版本函数
 upgrade_version() {
-    URL="https://github.com/hemilabs/heminetwork/releases/download/v0.6.0/heminetwork_v0.6.0_linux_amd64.tar.gz"
-    FILENAME="heminetwork_v0.6.0_linux_amd64.tar.gz"
-    DIRECTORY="/root/heminetwork_v0.6.0_linux_amd64"
+    URL="https://github.com/hemilabs/heminetwork/releases/download/v0.8.0/heminetwork_v0.8.0_linux_amd64.tar.gz"
+    FILENAME="heminetwork_v0.8.0_linux_amd64.tar.gz"
+    DIRECTORY="/root/heminetwork_v0.8.0_linux_amd64"
     ADDRESS_FILE="$HOME/popm-address.json"
     BACKUP_FILE="$HOME/popm-address.json.bak"
 
