@@ -270,7 +270,7 @@ backup_address_json() {
 
 # 查看日志函数
 view_logs() {
-    DIRECTORY="heminetwork_v0.6.0_linux_amd64"
+    DIRECTORY="heminetwork_v0.8.0_linux_amd64"
 
     echo "进入目录 $DIRECTORY..."
     cd "$HOME/$DIRECTORY" || { echo "目录 $DIRECTORY 不存在。"; exit 1; }
