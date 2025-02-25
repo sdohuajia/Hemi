@@ -208,7 +208,7 @@ upgrade_version() {
     fi
 
     echo "删除旧版本目录..."
-    rm -rf /root/heminetwork_v11.1.0_linux_amd64
+    rm -rf /root/heminetwork_v0.11.1_linux_amd64
 
     echo "正在解压新版本..."
     tar -xzf "$FILENAME" -C /root
@@ -288,7 +288,7 @@ main_menu() {
         echo "请选择要执行的操作:"
         echo "1) 生成密钥"
         echo "2) 运行节点"
-        echo "3) 升级版本(0.6.0)"
+        echo "3) 升级版本(0.11.5)"
         echo "4) 备份 address.json"
         echo "5) 查看日志"
         echo "6) 退出"
